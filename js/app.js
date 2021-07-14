@@ -13,5 +13,42 @@ function metadata(s) {
         demographic.append("h6").text(`${key}: ${value}`);
       });
     });
-  }
+}
 
+function buildGraphs(s) {
+
+  // Building graphs with the selected sample
+  d3.json("data/samples.json").then((d) => {
+    var samples = d.samples;
+    var setArray = samples.filter(b => b.id == s);
+    var result = setArray[0]
+
+    var ids = result.otu_ids;
+    var labels = result.otu_labels;
+    var values = result.sample_values;
+
+    // console.log(ids);
+    // console.log(labels);
+    // console.log(values);
+    
+    //  Bar Chart
+    var trace1 = [
+      {
+        x: values.slice(0, 10).reverse(),
+        y: ids.slice(0, 10).map(otu => `OTU ${otu}`).reverse(),
+        text: labels.slice(0, 10).reverse(),
+        type: "bar",
+        orientation: "h"
+      }
+    ];
+
+    var barData = [trace1];
+
+    var barLayout = {
+      title: "Top 10 Bacteria Cultures Found",
+      margin: { t: 40, l: 200 }
+    };
+
+    Plotly.newPlot("bar", trace1, barLayout);
+  });
+}
