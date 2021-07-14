@@ -52,3 +52,33 @@ function buildGraphs(s) {
     Plotly.newPlot("bar", trace1, barLayout);
   });
 }
+
+function init() {
+  // dropdown select element
+  var selector = d3.select("#selDataset");
+
+  // fill in the selDataset
+  d3.json("data/samples.json").then((d) => {
+    var sNames = d.names;
+    sNames.forEach((s) => {
+      selector
+        .append("option")
+        .text(s)
+        .property("value", s);
+    });
+
+    // Pass in the first sample to create the graph and demographic info
+    const initalSample = sNames[0];
+    metadata(initalSample);
+    buildGraphs(initalSample);
+  });
+}
+
+function optionChanged(nSample) {
+  // Pass in the new sample once selected in the dropdown
+  metadata(nSample);
+  buildGraphs(nSample);
+}
+
+// Initialize the dashboard
+init();
