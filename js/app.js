@@ -50,6 +50,34 @@ function buildGraphs(s) {
     };
 
     Plotly.newPlot("bar", trace1, barLayout);
+
+    // bubble chart
+    var trace2 = [
+      {
+        x: ids,
+        y: values,
+        text: labels,
+        mode: "markers",
+        marker: {
+          color: ids,
+          size: values,
+        }
+      }
+    ];
+
+    var data = [trace2];
+
+    var layout = {
+      title: "Bacteria Cultures Per Sample",
+      margin: { t: 40, l: 50 },
+      xaxis: { title: "OTU ID"},
+      //yaxis: { "showgrid": True},
+      hovermode: "closest",
+      // hoverinfo: "y",
+      showlegend: false,
+    };
+
+    Plotly.newPlot("bubble", trace2, layout);
   });
 }
 
